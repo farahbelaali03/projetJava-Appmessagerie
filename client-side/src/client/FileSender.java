@@ -8,18 +8,18 @@ import java.nio.file.Files;
 
 public class FileSender {
 
-    // ■■ Constantes ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    // Constantes
     private static final int TAILLE_MAX_FICHIER = 10 * 1024 * 1024; // 10 MB
 
-    // ■■ Attributs ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    //  Attributs
     private final Client client;
 
-    // ■■ Constructeur ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    //  Constructeur
     public FileSender(Client client) {
         this.client = client;
     }
 
-    // ■■ Méthodes publiques ■■■■■■■■■■■■■■■■■■■■■■
+    //  Méthodes publiques
 
     public boolean envoyerFichier(String destinataire, File fichier) {
         if (!validerFichier(fichier)) return false;
@@ -64,7 +64,7 @@ public class FileSender {
         }
     }
 
-    // ■■ Méthodes privées ■■■■■■■■■■■■■■■■■■■■■■■
+    //  Méthodes privées
 
     private boolean validerFichier(File fichier) {
         if (fichier == null || !fichier.exists()) {
