@@ -6,10 +6,6 @@ import model.TypeMessage;
 import java.io.*;
 import java.nio.file.Files;
 
-/**
- * Envoi de fichiers via le serveur.
- * @author Souraya
- */
 public class FileSender {
 
     // ■■ Constantes ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
