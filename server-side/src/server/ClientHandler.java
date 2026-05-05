@@ -1,5 +1,6 @@
 package server;
 
+import database.MessageDAO;
 import database.UserDAO;
 import model.Message;
 import model.TypeMessage;
@@ -16,6 +17,7 @@ public class ClientHandler implements Runnable {
     private ObjectInputStream in;
     private String username;
     private UserDAO userDAO = new UserDAO();
+    private MessageDAO messageDAO = new MessageDAO();
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
@@ -146,11 +148,19 @@ public class ClientHandler implements Runnable {
     // ════════════════════════════════
 
     private void handleMessage(Message msg) {
-        // Afnane va implémenter
+        messageDAO.sauvegarderMessage(msg);
+        ClientHandler destinataire = Server.clientsConnectes.get(msg.getDestinataire());
+        if (destinataire != null) {
+            destinataire.envoyer(msg);
+        }
     }
 
     private void handleFile(Message msg) {
-        // Afnane va implémenter
+        messageDAO.sauvegarderMessage(msg);
+        ClientHandler destinataire = Server.clientsConnectes.get(msg.getDestinataire());
+        if (destinataire != null) {
+            destinataire.envoyer(msg);
+        }
     }
 
     // ════════════════════════════════
