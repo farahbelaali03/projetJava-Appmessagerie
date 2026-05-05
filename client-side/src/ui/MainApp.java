@@ -7,10 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * Point d'entrée de l'application JavaFX côté client.
- * @author Souraya
- */
+
 public class MainApp extends Application {
 
     // Attributs statiques (partagés entre contrôleurs)
