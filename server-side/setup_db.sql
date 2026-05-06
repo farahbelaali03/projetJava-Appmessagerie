@@ -30,3 +30,14 @@ CREATE TABLE IF NOT EXISTS messages (
     );
 
 CREATE INDEX idx_messages_conv ON messages(expediteur, destinataire);
+
+CREATE TABLE IF NOT EXISTS calls (
+ id         INT AUTO_INCREMENT PRIMARY KEY,
+ appelant   VARCHAR(50) NOT NULL,
+ recepteur  VARCHAR(50) NOT NULL,
+ statut     ENUM('EN_ATTENTE','ACCEPTE','REFUSE','TERMINE') NOT NULL DEFAULT 'EN_ATTENTE',
+ date_appel DATETIME NOT NULL,
+ date_fin   DATETIME NULL,
+ FOREIGN KEY (appelant)  REFERENCES users(username),
+ FOREIGN KEY (recepteur) REFERENCES users(username)
+    );
