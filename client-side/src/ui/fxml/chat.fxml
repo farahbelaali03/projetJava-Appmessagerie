@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ui.ChatController"
+      prefWidth="900" prefHeight="600"
+      style="-fx-background-color: #111B21;">
+
+    <!-- ═══ SIDEBAR GAUCHE ═══════════════════════════════════ -->
+    <VBox prefWidth="320" maxWidth="320"
+          style="-fx-background-color: #111B21;">
+
+        <!-- Header sidebar -->
+        <HBox alignment="CENTER_LEFT" spacing="8"
+              style="-fx-background-color: #202C33;"
+              padding="12 16 12 16">
+            <Label text="WhatsApp"
+                   style="-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#E9EDEF;"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Label fx:id="labelNomUtilisateur"
+                   style="-fx-text-fill:#25D366; -fx-font-size:13px;"/>
+            <Button text="⏻"
+                    onAction="#seDeconnecter"
+                    style="-fx-background-color:transparent; -fx-text-fill:#8696A0;
+        -fx-font-size:16px; -fx-cursor:hand;"
+                    tooltip="Se déconnecter"/>
+        </HBox>
+
+        <!-- Barre de recherche -->
+        <HBox style="-fx-background-color:#202C33;" padding="8 12 8 12">
+            <TextField promptText="Rechercher un contact..."
+                       maxWidth="Infinity"
+                       HBox.hgrow="ALWAYS"
+                       style="-fx-background-color:#2A3942; -fx-text-fill:#E9EDEF;
+        -fx-prompt-text-fill:#667781; -fx-background-radius:8px;
+                              -fx-padding:7px 12px; -fx-font-size:13px;"/>
+        </HBox>
+
+        <!-- Label section -->
+        <Label text="CONTACTS"
+               padding="10 16 6 16"
+               style="-fx-font-size:11px; -fx-font-weight:bold; -fx-text-fill:#8696A0;"/>
+
+        <!-- Liste des contacts (scrollable) -->
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background-color:#111B21; -fx-background:#111B21;">
+            <VBox fx:id="listeContacts"
+                  style="-fx-background-color:#111B21;"/>
+        </ScrollPane>
+    </VBox>
+
+    <!-- ═══ ZONE PRINCIPALE DROITE ═══════════════════════════ -->
+    <VBox HBox.hgrow="ALWAYS"
+          style="-fx-background-color: #0B141A;">
+
+        <!-- Header contact actif -->
+        <HBox fx:id="headerContact"
+              alignment="CENTER_LEFT" spacing="12"
+              style="-fx-background-color:#202C33;"
+              padding="10 16 10 16">
+
+            <!-- Avatar contact -->
+            <Label fx:id="labelAvatarContact"
+                   text="?"
+                   minWidth="42" minHeight="42" maxWidth="42" maxHeight="42"
+                   alignment="CENTER"
+                   style="-fx-background-color:#3C3489; -fx-background-radius:21px;
+        -fx-text-fill:white; -fx-font-weight:bold; -fx-font-size:13px;"/>
+
+            <!-- Nom + statut -->
+            <VBox spacing="2">
+                <Label fx:id="labelContactActif"
+                       text="Sélectionnez un contact"
+                       style="-fx-font-size:14px; -fx-font-weight:bold; -fx-text-fill:#E9EDEF;"/>
+                <Label fx:id="labelStatutContact"
+                       text=""
+                       style="-fx-font-size:12px; -fx-text-fill:#8696A0;"/>
+            </VBox>
+
+            <Pane HBox.hgrow="ALWAYS"/>
+
+            <!-- Bouton appel vidéo -->
+            <Button fx:id="boutonAppelVideo"
+                    text="📹 Appel vidéo"
+                    onAction="#lancerAppelVideo"
+                    disable="true"
+                    style="-fx-background-color:transparent; -fx-text-fill:#8696A0;
+        -fx-font-size:12px; -fx-cursor:hand;"/>
+        </HBox>
+
+        <!-- Zone des messages -->
+        <ScrollPane fx:id="scrollMessages"
+                    fitToWidth="true"
+                    VBox.vgrow="ALWAYS"
+                    style="-fx-background-color:#0B141A; -fx-background:#0B141A;">
+            <VBox fx:id="zoneMessages"
+                  spacing="4"
+                  style="-fx-background-color:#0B141A;"
+                  padding="14 20 14 20"/>
+        </ScrollPane>
+
+        <!-- Barre de saisie -->
+        <HBox alignment="CENTER" spacing="8"
+              style="-fx-background-color:#202C33;"
+              padding="8 12 8 12">
+
+            <!-- Bouton fichier -->
+            <Button fx:id="boutonFichier"
+                    text="📎"
+                    onAction="#envoyerFichier"
+                    disable="true"
+                    style="-fx-background-color:transparent; -fx-font-size:18px; -fx-cursor:hand;"
+                    tooltip="Envoyer un fichier"/>
+
+            <!-- Champ texte -->
+            <TextField fx:id="champMessage"
+                       promptText="Saisir un message..."
+                       HBox.hgrow="ALWAYS"
+                       disable="true"
+                       style="-fx-background-color:#2A3942; -fx-text-fill:#E9EDEF;
+        -fx-prompt-text-fill:#667781; -fx-background-radius:10px;
+                              -fx-padding:9px 14px; -fx-font-size:13px;"/>
+
+            <!-- Bouton envoyer -->
+            <Button fx:id="boutonEnvoyer"
+                    text="➤"
+                    onAction="#envoyerMessage"
+                    disable="true"
+                    style="-fx-background-color:#25D366; -fx-text-fill:white;
+        -fx-font-size:14px; -fx-background-radius:20px;
+                           -fx-min-width:40px; -fx-min-height:40px; -fx-cursor:hand;"/>
+        </HBox>
+    </VBox>
+</HBox>
+
