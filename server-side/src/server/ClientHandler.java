@@ -1,5 +1,6 @@
 package server;
 
+import database.CallDAO;
 import database.MessageDAO;
 import database.UserDAO;
 import model.Message;
@@ -18,6 +19,7 @@ public class ClientHandler implements Runnable {
     private String username;
     private UserDAO userDAO = new UserDAO();
     private MessageDAO messageDAO = new MessageDAO();
+    private CallDAO callDAO = new CallDAO();
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
@@ -167,11 +169,38 @@ public class ClientHandler implements Runnable {
     // FARAH — AUDIO / VIDEO
     // ════════════════════════════════
 
-    private void handleCallRequest(Message msg) {}
-    private void handleCallAccept(Message msg) {}
-    private void handleCallReject(Message msg) {}
-    private void handleAudio(Message msg) {}
-    private void handleVideo(Message msg) {}
+    private void handleCallRequest(Message msg) {
+        callDAO.sauvegarderAppel(msg.getExpediteur(), msg.getDestinataire());
+        ClientHandler dest = Server.clientsConnectes.get(msg.getDestinataire());
+        if (dest != null) {
+            dest.envoyer(msg);
+        } else {
+            envoyer(new Message("SERVER", msg.getExpediteur(),
+                    msg.getDestinataire(), TypeMessage.CALL_REJECT));
+        }
+    }
+
+    private void handleCallAccept(Message msg) {
+        callDAO.accepterAppel(msg.getDestinataire(), msg.getExpediteur());
+        ClientHandler appelant = Server.clientsConnectes.get(msg.getDestinataire());
+        if (appelant != null) appelant.envoyer(msg);
+    }
+
+    private void handleCallReject(Message msg) {
+        callDAO.refuserAppel(msg.getDestinataire(), msg.getExpediteur());
+        ClientHandler appelant = Server.clientsConnectes.get(msg.getDestinataire());
+        if (appelant != null) appelant.envoyer(msg);
+    }
+
+    private void handleAudio(Message msg) {
+        ClientHandler dest = Server.clientsConnectes.get(msg.getDestinataire());
+        if (dest != null) dest.envoyer(msg);
+    }
+
+    private void handleVideo(Message msg) {
+        ClientHandler dest = Server.clientsConnectes.get(msg.getDestinataire());
+        if (dest != null) dest.envoyer(msg);
+    }
 
     // ════════════════════════════════
     // AMAL — CONTACTS
