@@ -205,10 +205,121 @@ public class ClientHandler implements Runnable {
     // ════════════════════════════════
     // AMAL — CONTACTS
     // ════════════════════════════════
-
     private void handleGetUsers() {
         broadcastUserList();
     }
+
+    /**
+     * Renvoie la liste des contacts enregistrés de l'utilisateur.
+     * Contenu de réponse : noms séparés par des virgules.
+     * Si aucun contact : chaîne vide.
+     *
+     * @author Amal
+     */
+    private void handleGetContacts(Message msg) {
+
+        String demandeur = msg.getExpediteur();
+        List<String> contacts = contactDAO.getContacts(demandeur);
+
+        String contenu = contacts.isEmpty() ? "" : String.join(",", contacts);
+
+        envoyer(new Message("SERVER", demandeur,
+                contenu, TypeMessage.GET_CONTACTS));
+    }
+
+    /**
+     * Ajoute un contact pour l'utilisateur.
+     * msg.getContenu() contient le nom du contact à ajouter.
+     * Réponse : "CONTACT_ADDED:<nom>" ou "CONTACT_ERROR:<raison>"
+     *
+     * @author Amal
+     */
+    private void handleAddContact(Message msg) {
+
+        String demandeur  = msg.getExpediteur();
+        String nomContact = msg.getContenu();
+
+        // Vérifier que le contact existe bien en base
+        boolean utilisateurExiste = userDAO.userExists(nomContact);
+
+        if (!utilisateurExiste) {
+            envoyer(new Message("SERVER", demandeur,
+                    "CONTACT_ERROR:Utilisateur introuvable", TypeMessage.ADD_CONTACT));
+            return;
+        }
+
+        // Eviter de s'ajouter soi-même
+        if (demandeur.equals(nomContact)) {
+            envoyer(new Message("SERVER", demandeur,
+                    "CONTACT_ERROR:Vous ne pouvez pas vous ajouter vous-même", TypeMessage.ADD_CONTACT));
+            return;
+        }
+
+        boolean succes = contactDAO.ajouterContact(demandeur, nomContact);
+
+        if (succes) {
+            envoyer(new Message("SERVER", demandeur,
+                    "CONTACT_ADDED:" + nomContact, TypeMessage.ADD_CONTACT));
+        } else {
+            envoyer(new Message("SERVER", demandeur,
+                    "CONTACT_ERROR:Contact déjà ajouté ou erreur base", TypeMessage.ADD_CONTACT));
+        }
+    }
+
+    /**
+     * Supprime un contact de la liste de l'utilisateur.
+     * msg.getContenu() contient le nom du contact à supprimer.
+     * Réponse : "CONTACT_REMOVED:<nom>" ou "CONTACT_ERROR:<raison>"
+     *
+     * @author Amal
+     */
+    private void handleRemoveContact(Message msg) {
+
+        String demandeur  = msg.getExpediteur();
+        String nomContact = msg.getContenu();
+
+        boolean succes = contactDAO.supprimerContact(demandeur, nomContact);
+
+        if (succes) {
+            envoyer(new Message("SERVER", demandeur,
+                    "CONTACT_REMOVED:" + nomContact, TypeMessage.REMOVE_CONTACT));
+        } else {
+            envoyer(new Message("SERVER", demandeur,
+                    "CONTACT_ERROR:Contact introuvable ou erreur base", TypeMessage.REMOVE_CONTACT));
+        }
+    }
+
+    /**
+     * Récupère et renvoie l'historique des messages entre deux utilisateurs.
+     *
+     * Format du contenu de la requête : "autreUtilisateur"
+     * Format de chaque message renvoyé dans la liste : Message sérialisé individuellement.
+     * On envoie d'abord un message HISTORIQUE_DEBUT, puis chaque message,
+     * puis un message HISTORIQUE_FIN pour signaler la fin.
+     *
+     * @author Amal
+     */
+    private void handleGetHistorique(Message msg) {
+
+        String demandeur       = msg.getExpediteur();
+        String autreUtilisateur = msg.getContenu();
+
+        // Signal de début d'historique
+        envoyer(new Message("SERVER", demandeur,
+                "HISTORIQUE_DEBUT:" + autreUtilisateur, TypeMessage.GET_HISTORIQUE));
+
+        // Récupération et envoi de chaque message
+        List<Message> historique = messageDAO.getHistorique(demandeur, autreUtilisateur);
+
+        for (Message messageHistorique : historique) {
+            envoyer(messageHistorique);
+        }
+
+        // Signal de fin d'historique
+        envoyer(new Message("SERVER", demandeur,
+                "HISTORIQUE_FIN:" + autreUtilisateur, TypeMessage.GET_HISTORIQUE));
+    }
+
 
     // ════════════════════════════════
     // UTILITAIRE

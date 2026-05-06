@@ -30,7 +30,6 @@ public class MainApp extends Application {
     }
 
     // Méthodes publiques statiques
-
     public static void changerScene(String nomFxml) {
         try {
             FXMLLoader loader = new FXMLLoader(
