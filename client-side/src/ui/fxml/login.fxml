@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ui.LoginController"
+           style="-fx-background-color: #111B21;"
+           prefWidth="480" prefHeight="540">
+
+    <VBox alignment="CENTER_LEFT"
+          maxWidth="380"
+          spacing="14"
+          style="-fx-background-color: #202C33; -fx-background-radius: 16px;"
+          padding="36 32 36 32">
+
+        <!-- Logo -->
+        <Label text="💬 WhatsApp"
+               style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #25D366;"/>
+
+        <Label text="Connectez-vous pour commencer"
+               style="-fx-font-size: 13px; -fx-text-fill: #8696A0;"/>
+
+        <Region prefHeight="6"/>
+
+        <!-- Nom d'utilisateur -->
+        <Label text="NOM D'UTILISATEUR"
+               style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #8696A0;"/>
+        <TextField fx:id="champNomUtilisateur"
+                   promptText="Votre nom..."
+                   style="-fx-background-color:#2A3942; -fx-text-fill:#E9EDEF;
+        -fx-prompt-text-fill:#667781; -fx-background-radius:8px;
+                          -fx-padding:10px 13px; -fx-font-size:13px;"/>
+
+        <!-- Mot de passe -->
+        <Label text="MOT DE PASSE"
+               style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #8696A0;"/>
+        <PasswordField fx:id="champMotDePasse"
+                       promptText="Votre mot de passe..."
+                       style="-fx-background-color:#2A3942; -fx-text-fill:#E9EDEF;
+        -fx-prompt-text-fill:#667781; -fx-background-radius:8px;
+                              -fx-padding:10px 13px; -fx-font-size:13px;"/>
+
+        <!-- Bouton -->
+        <Button fx:id="boutonConnecter"
+                text="Se connecter"
+                maxWidth="Infinity"
+                onAction="#seConnecter"
+                style="-fx-background-color:#25D366; -fx-text-fill:black;
+        -fx-font-size:15px; -fx-font-weight:bold;
+                       -fx-background-radius:10px; -fx-padding:12px; -fx-cursor:hand;"/>
+
+        <!-- Indicateur chargement -->
+        <ProgressIndicator fx:id="indicateurChargement"
+                           maxWidth="30" maxHeight="30"
+                           visible="false"/>
+
+        <!-- Erreur -->
+        <Label fx:id="labelErreur"
+               text=""
+               wrapText="true"
+               style="-fx-text-fill: #E24B4A; -fx-font-size: 12px;"
+               visible="false"/>
+
+        <Label text="ⓘ  Connexion TCP · Port 5000"
+               style="-fx-text-fill: #667781; -fx-font-size: 11px;"/>
+    </VBox>
+</StackPane>
+
