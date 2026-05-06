@@ -14,5 +14,9 @@ public enum TypeMessage {
     MESSAGE_SEEN,
     CONNECT,
     DISCONNECT,
-    GET_USERS
+    GET_USERS,
+    GET_CONTACTS,
+    ADD_CONTACT,
+    REMOVE_CONTACT,
+    GET_HISTORIQUE
 }
