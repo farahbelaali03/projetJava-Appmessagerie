@@ -41,3 +41,13 @@ CREATE TABLE IF NOT EXISTS calls (
  FOREIGN KEY (appelant)  REFERENCES users(username),
  FOREIGN KEY (recepteur) REFERENCES users(username)
     );
+
+CREATE TABLE IF NOT EXISTS contacts (
+    id               INT AUTO_INCREMENT PRIMARY KEY,
+    username         VARCHAR(50) NOT NULL,
+    contact_username VARCHAR(50) NOT NULL,
+    date_ajout       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_contact (username, contact_username),
+    FOREIGN KEY (username)         REFERENCES users(username) ON DELETE CASCADE,
+    FOREIGN KEY (contact_username) REFERENCES users(username) ON DELETE CASCADE
+    );

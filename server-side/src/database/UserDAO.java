@@ -2,11 +2,11 @@ package database;
 
 import java.sql.*;
 
+
 public class UserDAO {
 
     public boolean login(String username, String password) {
-        String sql =
-                "SELECT * FROM users WHERE username=? AND password=?";
+        String sql = "SELECT * FROM users WHERE username=? AND password=?";
         try (PreparedStatement s =
                      DatabaseConnection.getConnection().prepareStatement(sql)) {
             s.setString(1, username);
@@ -19,8 +19,7 @@ public class UserDAO {
     }
 
     public boolean register(String username, String password) {
-        String sql =
-                "INSERT INTO users (username, password) VALUES(?, ?)";
+        String sql = "INSERT INTO users (username, password) VALUES(?, ?)";
         try (PreparedStatement s =
                      DatabaseConnection.getConnection().prepareStatement(sql)) {
             s.setString(1, username);
@@ -34,8 +33,7 @@ public class UserDAO {
     }
 
     public void updateStatus(String username, boolean online) {
-        String sql =
-                "UPDATE users SET online=? WHERE username=?";
+        String sql = "UPDATE users SET online=? WHERE username=?";
         try (PreparedStatement s =
                      DatabaseConnection.getConnection().prepareStatement(sql)) {
             s.setBoolean(1, online);
@@ -43,6 +41,19 @@ public class UserDAO {
             s.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Erreur status : " + e.getMessage());
+        }
+    }
+
+
+    public boolean userExists(String username) {
+        String sql = "SELECT 1 FROM users WHERE username = ?";
+        try (PreparedStatement stmt =
+                     DatabaseConnection.getConnection().prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            return false;
         }
     }
 }
